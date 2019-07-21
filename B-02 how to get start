@@ -1,0 +1,18 @@
+Intro for TD lambda new members v 1.0
+
+Welcome and Happy trading! Let’s go!
+
+STEP 1： get the main skills of Deep learning
+（1）	Gluon： https://zh.gluon.ai
+（2）	http://space.bilibili.com/209599371   Lesson 1 – 17
+STEP2: Basic skill about Reinforcement Learning
+(1)	 RL-UCL: http://www0.cs.ucl.ac.uk/staff/D.Silver/web/Teaching.html
+ Videos: https://www.bilibili.com/video/av32149008
+ Books:https://github.com/joomladigger/reinforce/blob/master/main-RL-QiangYe.pdf
+ Coding: https://github.com/joomladigger/reinforce
+(2)	 RL-Stanford: CS234 http://web.stanford.edu/class/cs234/index.html
+coding: https://github.com/joomladigger/reinforcement-learning-stanford
+Videos: https://www.bilibili.com/video/av47812079/
+STEP3: Project I PGPortfolio
+(1)	Paper: https://arxiv.org/abs/1706.10059
+(2)	Coding: https://github.com/joomladigger/PGPortfolio
