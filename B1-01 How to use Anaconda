@@ -1,0 +1,48 @@
+# 列出当前环境下所有安装的 conda 包。
+$ conda list
+
+# 列举一个指定环境下的所有包
+$ conda list -n env_name
+
+# 查询库
+$ conda search scrapys
+
+# 安装库安装时可以指定版本例如：（scrapy=1.5.0）
+$ conda install scrapy
+
+# 为指定环境安装某个包
+$ conda install --name target_env_name package_name
+
+# 更新安装的库
+$ conda update scrapy
+
+# 更新指定环境某个包
+$ conda update -n target_env_name package_name
+
+# 更新所有包
+$ conda update --all
+
+# 虚拟环境
+# 创建环境，后面的python=3.6是指定python的版本
+$ conda create --name env_name python=3.6
+
+# 创建包含某些包的环境（也可以加上版本信息）
+$ conda create --name env_name python=3.7 numpy scrapy
+
+# 激活某个环境
+$ activate env_name
+
+# 关闭某个环境
+$ conda deactivate
+
+# 复制某个环境
+$ conda create --name new_env_name --clone old_env_name
+
+# 删除某个环境
+$ conda remove --name env_name --all
+
+# 生成需要分享环境的yml文件（需要在虚拟环境中执行）
+$ conda env export > environment.yml
+
+# 别人在自己本地使用yml文件创建虚拟环境
+$ conda env create -f environment.yml
