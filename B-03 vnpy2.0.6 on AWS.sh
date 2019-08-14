@@ -157,3 +157,57 @@ ImportError: libpython3.7m.so.1.0: cannot open shared object file: No such file 
   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/mnt/Data/System/Programs/anaconda3/envs/py37_quant/lib
   注意.so的位置是envs里的那个，不是anaconda3/lib里的那个（不然会程序崩溃)
 '
+########################################
+官网上对 Mac 下运行 vnpy 介绍的比较少, 自己尝试安装了下, 把过程简单记录下来, 希望能帮到大家.
+
+我并不准备在 Mac 进行实盘交易, 因为刚准备开始量化, 所以就打算先熟悉下框架用用回测然后对 A股 进行模拟交易, 所以无所谓 CTP 接口是否可用.
+
+下面以跑通 okex 来说明.
+
+安装步骤:
+
+安装 Anaconda, 这个到官网下载 Python 3.7 的版本即可: https://www.anaconda.com/distribution/
+git clone vnpy 代码到本地
+切换到 vnpy 代码目录
+运行 conda create --name test-vnpy python=3.7, 创建 conda 环境, 名字随便取的就叫 test-vnpy 了
+运行 conda activate test-vnpy, 激活环境
+安装 python.app (Mac 下运行 Matplotlib 需要使用到): conda install python.app
+安装 ta-lib, 这个直接通过 brew install ta-lib 安装
+pip 安装依赖的时候发现报 pg_config executable not found 错误, 安装 PostgreSQL 解决, 运行 brew install postgresql 安装即可
+安装 rqdatac: pip install --pre --extra-index-url https://rquser:ricequant99@py.ricequant.com/simple/ rqdatac
+安装 ibapi: pip install https://vnpy-pip.oss-cn-shanghai.aliyuncs.com/colletion/ibapi-9.75.1-py3-none-any.whl
+安装 requirements 中依赖: pip install -r requirements.txt
+安装 vnpy: pip install .
+创建 run.py, 内容如下:
+
+from vnpy.event import EventEngine
+from vnpy.trader.engine import MainEngine
+from vnpy.trader.ui import MainWindow, create_qapp
+from vnpy.gateway.okex import OkexGateway
+from vnpy.app.cta_strategy import CtaStrategyApp
+
+def main():
+    """Start VN Trader"""
+    qapp = create_qapp()
+
+    event_engine = EventEngine()
+    main_engine = MainEngine(event_engine)
+
+    main_engine.add_gateway(OkexGateway)
+    main_engine.add_app(CtaStrategyApp)
+
+    main_window = MainWindow(main_engine, event_engine)
+    main_window.showMaximized()
+
+    qapp.exec()
+
+if __name__ == "__main__":
+    main()
+使用 pythonw run.py 运行
+这样就成功启动界面了, 点击菜单连接 API 即可!
+
+还不是很清楚 VN Trader 的用法, 不过看样子功能都正常了, 今天就先到这里了, 明天再来研究研究.
+
+
+
+
