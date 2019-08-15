@@ -46,3 +46,38 @@ $ conda env export > environment.yml
 
 # 别人在自己本地使用yml文件创建虚拟环境
 $ conda env create -f environment.yml
+
+
+conda 创建/删除/重命名 环境
+96  谢小帅 
+ 0.5 2018.09.17 21:32 字数 79 阅读 24729评论 1喜欢 5
+创建新环境
+conda create -n rcnn python=3.6
+删除环境
+conda remove -n rcnn --all
+重命名环境
+conda 其实没有重命名指令，实现重命名是通过 clone 完成的，分两步：
+
+先 clone 一份 new name 的环境
+删除 old name 的环境
+比如，想把环境 rcnn 重命名成 tf
+
+第1步
+
+conda create -n tf --clone rcnn
+Source:      /anaconda3/envs/rcnn
+Destination: /anaconda3/envs/tf
+Packages: 37
+Files: 8463
+第2步
+
+conda remove -n rcnn --all
+结果
+
+conda info -e
+# conda environments:
+#
+crawl                    /anaconda3/envs/crawl
+flask                    /anaconda3/envs/flask
+tf                       /anaconda3/envs/tf
+root                  *  /anaconda3
