@@ -1,0 +1,9 @@
+服务器端命令：
+jupyter notebook --ip=0.0.0.0
+
+找到服务器端信息如：
+http://hk:8888/?token=6f38b7aba1d57d9abedb0c7c99f896e7469a9fad68f936c5
+
+将 hk 换为 服务器地址 
+在本地浏览器中输入：
+http://服务器地址:8888/?token=6f38b7aba1d57d9abedb0c7c99f896e7469a9fad68f936c5
