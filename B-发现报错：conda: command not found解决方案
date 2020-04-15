@@ -1,0 +1,16 @@
+在终端输入conda info --envs检验anaconda是否安装成功，发现报错：conda: command not found
+
+原因是因为~/.bashrc文件没有配置好
+
+vim ~/.bashrc
+
+  在最后一行加上
+
+export PATH=$PATH:/home/用户名/anaconda3/bin
+
+
+export PATH=$PATH:【你的安装目录】
+
+然后保存更改，运行
+
+source ~/.bashrc
