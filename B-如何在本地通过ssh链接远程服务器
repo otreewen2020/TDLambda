@@ -1,0 +1,50 @@
+如何在本地通过ssh链接远程服务器
+登录服务器： 
+  1.切换到 root sudo -i
+  2.编辑ssh配置文件 vi /etc/ssh/sshd_config
+  3.修改以下内容即可
+  PermitRootLogin yes
+  PasswordAuthentication yes
+  4.设置登录账号密码：sudo passwd ${whoami} 
+  5.重启ssh service sshd restart
+本地操作：
+  1.在本地生成私钥和公钥
+  $ cd ~/.ssh
+  $ ssh-keygen -f myKey
+  或者
+  $ ssh-keygen -t rsa -f ~/.ssh/my-ssh-key -C [USERNAME]
+  Generating public/private rsa key pair.
+  Enter passphrase (empty for no passphrase): ( 按enter键即可)
+  Enter same passphrase again: ( 按enter键即可)
+  Your identification has been saved in myKey.
+  Your public key has been saved in myKey.pub.
+  The key fingerprint is:
+  SHA256:EW7ow1aaaaaf8mNvk user@computer-name.local
+  The key's randomart image is:
+  +---[RSA 2048]----+
+  |=.o+= o .        |
+  |o+.o+= + .       |
+  |o.o..oo *        |
+  |..o+ +o+ o       |
+  |.oo+  =+S o      |
+  | o. * o. = o     |
+  | ..o =  . =      |
+  |. o.. .    E     |
+  | . .o.           |
+  +----[SHA256]-----+
+  # 此时会生成 公钥 myKey.pub 和 私钥 myKey
+  2.复制公钥
+  $ cat myKey.pub
+  ssh-rsa AAAAaaaaaaaeglRVJzAhNq+W
+  中间部分省略。。。
+  dKx8sJ0Rw4aaaaaa845UVp1 user@computer-name.local
+  把这长长的一段复制下来，把其中的 user@computer-name.local 改为你在浏览器 SSH 登入之后的当前用户名 ${whoami}
+  3.导入公钥
+  进入谷歌云平台页面 -> 计算引擎 -> 元数据 -> SSH 密钥，粘贴保存
+  谷歌就会把上面这段 public key 写入到 ~/.ssh/authorized_keys
+
+本地通过私钥登录
+
+  $ ssh -i myKey [服务器端登录账号]@[服务器IP地址]
+  $ ssh-rsa [KEY_VALUE] [USERNAME]
+
