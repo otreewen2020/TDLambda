@@ -1,0 +1,4 @@
+1. colab
+   eg. ! git clone https://github.com/joomladigger/machine-learning-for-trading.git
+2. load Google Drive in colab
+3. %cp -r /content/machine-learning-for-trading/ drive/My\ Drive 
