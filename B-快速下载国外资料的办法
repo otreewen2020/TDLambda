@@ -1,0 +1,5 @@
+1. colab
+! wget links
+2. Load google drive in colab
+3. cp the file from colab to google drive
+%cp -r /content/filename /content/dirve/My\D
