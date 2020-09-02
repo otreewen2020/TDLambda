@@ -1,2 +1,3 @@
 https://towardsdatascience.com/using-reinforcement-learning-to-trade-bitcoin-for-massive-profit-b69d0e8f583b
-how to break the wall: bash <(curl -sL https://raw.githubusercontent.com/hijkpw/scripts/master/trojan.sh)
+how to break the wall: centos7+ 
+bash <(curl -sL https://raw.githubusercontent.com/hijkpw/scripts/master/trojan.sh)
