@@ -3,3 +3,12 @@ docker run -it -v $(pwd):/home/packt/ml4t -p 8888:8888 -e QUANDL_API_KEY=<your A
 
 2. how to close ml4t
 sudo docker rm ml4t
+
+3. how to study jupther
+jupyter notebook --ip 0.0.0.0 --no-browser --allow-root
+jupyter lab --ip 0.0.0.0 --no-browser --allow-root
+
+4. which env to use
+Part(s)	  Chapters	envs	
+1, 2 & 3	2-16	    ml4t
+4	        17-22	    ml4t_dl
