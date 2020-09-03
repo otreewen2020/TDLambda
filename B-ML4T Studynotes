@@ -1,0 +1,5 @@
+1. how to use docker to start the environment
+docker run -it -v $(pwd):/home/packt/ml4t -p 8888:8888 -e QUANDL_API_KEY=<your API key> --name ml4t appliedai/packt:latest bash
+
+2. how to close ml4t
+sudo docker rm ml4t
