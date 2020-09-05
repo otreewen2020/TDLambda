@@ -1,0 +1,16 @@
+1. 在google cloud engine 端的配置
+
+* 切换到 root
+  sudo -i
+* 编辑ssh配置文件
+  vi /etc/ssh/sshd_config
+* 修改以下内容即可
+  PermitRootLogin yes
+  PasswordAuthentication yes
+* 设置root 账号密码
+  passwd root
+* 重启ssh
+  service sshd restart
+  
+2. 在vscode端安装插件 vscode-ssh
+之后配置 ip,端口20，密码即可连接
