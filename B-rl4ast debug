@@ -7,3 +7,6 @@ Centos7+
    
    ubuntu 18.04ltd (work)
    apt install libgl1-mesa-glx
+3. jupyter root
+jupyter 默认不建议以root身份运行，可以在启动的到时候使用 --allow-root 跳过警告信息。 jupyter notebook  --allow-root
+也可以在配置文件中提前配置好 c.NotebookApp.allow_root =True
