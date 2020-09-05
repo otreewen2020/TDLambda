@@ -1,0 +1,6 @@
+Centos7+
+
+1. mpi4py
+   conda isntall mpi4py
+2. ImportError: libGL.so.1: cannot open shared object file: No such file or directory
+   yum install mesa-libGL.x86_64
