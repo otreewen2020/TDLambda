@@ -1,0 +1,22 @@
+tar.gz压缩，查看，解压
+本次使用的压缩格式是*.tar.gz，用到的命令如下：
+
+压缩：
+
+tar -czf jpg.tar.gz *.jpg   //将目录里所有jpg文件打包成jpg.tar后，并且将其用gzip压缩，生成一个gzip压缩过的包，命名为jpg.tar.gz
+
+tar -czf dir.tar.gz /home/data    //压缩/home/data目录下全部文件
+查看：
+
+tar -ztvf /tmp/dir.tar.gz
+解压：
+
+tar -xzvf file.tar.gz //解压tar.gz
+
+tar -zxvf /tmp/etc.tar.gz etc/passwd    //将 /tmp/etc.tar.gz 内的 etc/passwd 解开
+
+tar -zxvpf /tmp/etc.tar.gz /etc    //将 /etc目录内的所有文件备份下来，并且保存其权限
+
+tar –exclude /home/aa -zcvf myfile.tar.gz /home/* /etc    //备份 /home, /etc，但不要 /home/aa
+
+tar -N ‘2018/01/01′ -zcvf home.tar.gz /home    //在/home 目录中，比 2018/01/01 新的文件才备份
