@@ -1,2 +1,2 @@
-# TDlambdaGroup
-For TDlambda Team
+# Bahamut Project
+Using DL4T
