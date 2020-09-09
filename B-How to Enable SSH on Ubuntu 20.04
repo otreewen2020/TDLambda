@@ -1,0 +1,11 @@
+# Server
+sudo apt update
+sudo apt install openssh-server
+sudo systemctl status ssh
+
+Press q to get back to the command line prompt
+ip a  # to find ip address of server
+
+# Client
+ssh username@ip_address
+
