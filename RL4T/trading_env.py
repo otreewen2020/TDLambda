@@ -1,28 +1,3 @@
-"""
-The MIT License (MIT)
-
-Copyright (c) 2016 Tito Ingargiola
-Copyright (c) 2019 Stefan Jansen
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-"""
-
 import logging
 import tempfile
 
@@ -43,21 +18,18 @@ log.info('%s logger started.', __name__)
 class DataSource:
     """
     Data source for TradingEnvironment
-
     Loads & preprocesses daily price & volume data
     Provides data for each new episode.
     Stocks with longest history:
-
     ticker  # obs
     KO      14155
     GE      14155
     BA      14155
     CAT     14155
     DIS     14155
-
     """
 
-    def __init__(self, trading_days=252, ticker='AAPL', normalize=True):
+    def __init__(self, trading_days=252, ticker='ETHBTC', normalize=True):
         self.ticker = ticker
         self.trading_days = trading_days
         self.normalize = normalize
@@ -70,6 +42,7 @@ class DataSource:
 
     def load_data(self):
         log.info('loading data for {}...'.format(self.ticker))
+        '''
         idx = pd.IndexSlice
  #       relative_add = "../data/assets.h5"
         absolute_add = "/home/tx/RL4Trading/ml4t/data/assets.h5"
@@ -79,28 +52,45 @@ class DataSource:
                        ['adj_close', 'adj_volume', 'adj_low', 'adj_high']]
                   .dropna()
                   .sort_index())
-        df.columns = ['close', 'volume', 'low', 'high']
+        df.columns = ['close', 'volume', 'low', 'high']  '''
+        # 下载数据
+        import urllib.request 
+        import ssl
+        ticker=self.ticker
+        url = f'https://www.cryptodatadownload.com/cdd/Okex_{ticker}_1h.csv'
+        file_name = f'Okex_{ticker}_1h.csv'
+
+        ssl._create_default_https_context = ssl._create_unverified_context
+        with urllib.request.urlopen(url) as testfile, open(file_name, 'w') as f:
+            f.write(testfile.read().decode())
+        # 清洗数据
+        import pandas as pd
+        df = pd.read_csv(file_name,sep=',',skiprows=1)
+        df['Date'] = pd.to_datetime(df['Unix Timestamp'], unit='s',utc=True)
+        df.index = df['Date']
+        df.sort_index()
         log.info('got data for {}...'.format(self.ticker))
+
         return df
 
     def preprocess_data(self):
         """calculate returns and percentiles, then removes missing values"""
 
-        self.data['returns'] = self.data.close.pct_change()
-        self.data['ret_2'] = self.data.close.pct_change(2)
-        self.data['ret_5'] = self.data.close.pct_change(5)
-        self.data['ret_10'] = self.data.close.pct_change(10)
-        self.data['ret_21'] = self.data.close.pct_change(21)
-        self.data['rsi'] = talib.STOCHRSI(self.data.close)[1]
-        self.data['macd'] = talib.MACD(self.data.close)[1]
-        self.data['atr'] = talib.ATR(self.data.high, self.data.low, self.data.close)
+        self.data['returns'] = self.data.Close.pct_change()
+        self.data['ret_2'] = self.data.Close.pct_change(2)
+        self.data['ret_5'] = self.data.Close.pct_change(5)
+        self.data['ret_10'] = self.data.Close.pct_change(10)
+        self.data['ret_21'] = self.data.Close.pct_change(21)
+        self.data['rsi'] = talib.STOCHRSI(self.data.Close)[1]
+        self.data['macd'] = talib.MACD(self.data.Close)[1]
+        self.data['atr'] = talib.ATR(self.data.High, self.data.Low, self.data.Close)
 
-        slowk, slowd = talib.STOCH(self.data.high, self.data.low, self.data.close)
+        slowk, slowd = talib.STOCH(self.data.High, self.data.Low, self.data.Close)
         self.data['stoch'] = slowd - slowk
-        self.data['atr'] = talib.ATR(self.data.high, self.data.low, self.data.close)
-        self.data['ultosc'] = talib.ULTOSC(self.data.high, self.data.low, self.data.close)
+        self.data['atr'] = talib.ATR(self.data.High, self.data.Low, self.data.Close)
+        self.data['ultosc'] = talib.ULTOSC(self.data.High, self.data.Low, self.data.Close)
         self.data = (self.data.replace((np.inf, -np.inf), np.nan)
-                     .drop(['high', 'low', 'close', 'volume'], axis=1)
+                     .drop(['High', 'Low', 'Close', 'Volume','Symbol','Volume ETH','Volume BTC','Unix Timestamp'], axis=1)
                      .dropna())
 
         r = self.data.returns.copy()
@@ -205,22 +195,18 @@ class TradingSimulator:
 
 class TradingEnvironment(gym.Env):
     """A simple trading environment for reinforcement learning.
-
     Provides daily observations for a stock price series
     An episode is defined as a sequence of 252 trading days with random start
     Each day is a 'step' that allows the agent to choose one of three actions:
     - 0: SHORT
     - 1: HOLD
     - 2: LONG
-
     Trading has an optional cost (default: 10bps) of the change in position value.
     Going from short to long implies two trades.
     Not trading also incurs a default time cost of 1bps per step.
-
     An episode begins with a starting Net Asset Value (NAV) of 1 unit of cash.
     If the NAV drops to 0, the episode ends with a loss.
     If the NAV hits 2.0, the agent wins.
-
     The trading simulator tracks a buy-and-hold strategy as benchmark.
     """
     metadata = {'render.modes': ['human']}
