@@ -1,5 +1,5 @@
 服务器端命令：
-jupyter notebook --ip=0.0.0.0
+jupyter notebook --ip=0.0.0.0 --allow-root
 
 找到服务器端信息如：
 http://hk:8888/?token=6f38b7aba1d57d9abedb0c7c99f896e7469a9fad68f936c5
