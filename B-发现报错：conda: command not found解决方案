@@ -14,3 +14,24 @@ export PATH=$PATH:【你的安装目录】
 然后保存更改，运行
 
 source ~/.bashrc
+
+ommandNotFoundError: Your shell has not been properly configured to use 'conda activate'.
+To initialize your shell, run
+
+    $ conda init <SHELL_NAME>
+
+Currently supported shells are:
+  - bash
+  - fish
+  - tcsh
+  - xonsh
+  - zsh
+  - powershell
+
+See 'conda init --help' for more information and options.
+的解决方案：
+
+export PATH=/home/your_username/anaconda3/bin:$PATH
+source ~/.bashrc
+
+
